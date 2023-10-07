@@ -1,21 +1,10 @@
-import React from 'react';
-import axios from 'axios';
+import { Routes, Route } from 'react-router-dom';
+
+import "./App.css";
+import ListLivros from "./ListLivros";
+
 function App() {
-  axios({
-    method: 'get',
-    url: 'https://fakerestapi.azurewebsites.net/api/v1/Books',
-    params: { id: 2 }
-  })
-    .then(response => {
-      // manipular dados de resposta
-      console.log(response);
-    })
-    .catch(err => {
-      // manipular erros
-      console.log(err);
-    });
-  return (
-    <p>Teste com API Axios</p>
-  );
+  return <ListLivros />;
 }
+
 export default App;
