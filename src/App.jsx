@@ -1,10 +1,17 @@
-import { Routes, Route } from 'react-router-dom';
-
 import "./App.css";
-import ListLivros from "./ListLivros";
+import ListLivros from "./components/ListLivros";
+import EditarLivro from './components/EditarLivro';
 
-function App() {
-  return <ListLivros />;
-}
+const App = () => {
+  return (
+    <>
+      <ListLivros />
 
+      <Routes>
+        <Route path="EditarLivro" element={<EditarLivro />} />
+      </Routes>
+
+    </>
+  );
+};
 export default App;
