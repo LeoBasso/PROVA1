@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
-function EditarLivro() {
+function Detalhes() {
   const { id } = useParams(); // Obtém o ID do livro da URL
   const [livroDetalhes, setLivroDetalhes] = useState(null);
 
@@ -21,15 +21,18 @@ function EditarLivro() {
     }
 
     buscarDetalhesDoLivro();
-  }, [id]);
+  }, [id]); // Certifique-se de que a busca seja acionada sempre que o ID na URL mudar
 
   return (
     <div>
-      <h1>Editar Livro</h1>
+      <h1>Detalhes do Livro</h1>
       {livroDetalhes ? (
         <div>
           <h2>Título: {livroDetalhes.title}</h2>
-          {/* Adicione um formulário para editar as informações do livro aqui */}
+          <p>Publicação: {livroDetalhes.publishDate}</p>
+          <p>Descrição: {livroDetalhes.description}</p>
+          <p>Páginas: {livroDetalhes.pageCount}</p>
+          <Link to="/">Voltar para a lista de livros</Link>
         </div>
       ) : (
         <p>Carregando detalhes do livro...</p>
@@ -38,4 +41,4 @@ function EditarLivro() {
   );
 }
 
-export default EditarLivro;
+export default Detalhes;
