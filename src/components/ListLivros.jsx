@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function ListLivros() {
   const [livros, setLivros] = useState([]);
+  
 
   useEffect(() => {
     // Função para buscar os livros da API
@@ -38,13 +40,20 @@ function ListLivros() {
   return (
     <div>
       <h1>Lista de Livros</h1>
+      <Link to="/adicionarLivro">
+        <button>Adicionar Novo Livro</button>
+      </Link>
       <ul>
         {livros.map((livro, index) => (
           <li key={index}>
             <h2>Título: {livro.title}</h2>
+            <Link to={`/detalhes/${livro.id}`}>
+              <button>Mostrar mais</button>
+            </Link>
+            <Link to={`/editarLivro/${livro.id}`}>
+              <button>Editar Livro</button>
+            </Link>
             <button onClick={() => excluirLivro(livro.id)}>Excluir</button>
-            <button>Mostrar mais</button> {/* Botão "Mostrar mais" permanece */}
-            <button>Editar Livro</button> {/* Botão "Editar Livro" permanece */}
           </li>
         ))}
       </ul>
