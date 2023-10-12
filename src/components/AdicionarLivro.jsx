@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Importe o Link
+import { Link } from "react-router-dom";
 
 function AdicionarLivro() {
   const [livro, setLivro] = useState({
@@ -9,10 +9,18 @@ function AdicionarLivro() {
     description: "",
     pageCount: "",
     publishDate: "",
-    // Adicione outras propriedades do livro aqui
   });
 
-  const [mensagem, setMensagem] = useState(""); // Variável de estado para a mensagem
+  const [mensagem, setMensagem] = useState("");
+  const [erros, setErros] = useState({});
+
+  const clearMessage = () => {
+    setMensagem("");
+  };
+
+  const clearErrors = () => {
+    setErros({});
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,77 +33,122 @@ function AdicionarLivro() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      // Enviar os dados do livro para o servidor usando axios.post
-      await axios.post("https://fakerestapi.azurewebsites.net/api/v1/books", livro);
+    const errors = {};
+    if (!livro.title) {
+      errors.title = "O título é obrigatório";
+    }
+    if (!livro.author) {
+      errors.author = "O autor é obrigatório";
+    }
+    if (!livro.description) {
+      errors.description = "A descrição é obrigatória";
+    }
+    if (!livro.pageCount) {
+      errors.pageCount = "O número de páginas é obrigatório";
+    }
+    if (!livro.publishDate) {
+      errors.publishDate = "A data de publicação é obrigatória";
+    }
 
-      // Exibir a mensagem de sucesso
-      setMensagem("Livro adicionado com sucesso");
+    if (Object.keys(errors).length === 0) {
+      try {
+        await axios.post(
+          "https://fakerestapi.azurewebsites.net/api/v1/books",
+          livro
+        );
 
-      // Limpar a mensagem após 3 segundos (3000 milissegundos)
-      setTimeout(() => {
-        setMensagem("");
-      }, 3000);
-    } catch (error) {
-      console.error("Erro ao adicionar o livro:", error);
-      setMensagem("Erro ao adicionar o livro. Por favor, tente novamente.");
+        setMensagem("Livro adicionado com sucesso");
+        setTimeout(clearMessage, 3000);
+      } catch (error) {
+        console.error("Erro ao adicionar o livro:", error);
+        setMensagem("Erro ao adicionar o livro. Por favor, tente novamente.");
+        setTimeout(clearMessage, 3000);
+      }
+    } else {
+      setErros(errors);
+      setTimeout(clearErrors, 3000);
     }
   };
 
   return (
-    <div>
-      <h1>Adicionar Novo Livro</h1>
-      {mensagem && <p>{mensagem}</p>}
+    <div className="bg-light p-4">
+      <h1 className="text-darkgrey">Adicionar Novo Livro</h1>
+      {mensagem && (
+        <div className="alert alert-success" role="alert">
+          {mensagem}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Título:</label>
+        <div className="mb-3">
+          <label className="form-label">Título:</label>
           <input
             type="text"
+            className="form-control"
             name="title"
             value={livro.title}
             onChange={handleChange}
           />
+          {erros.title && (
+            <div className="text-danger">{erros.title}</div>
+          )}
         </div>
-        <div>
-          <label>Autor:</label>
+        <div className="mb-3">
+          <label className="form-label">Autor:</label>
           <input
             type="text"
+            className="form-control"
             name="author"
             value={livro.author}
             onChange={handleChange}
           />
+          {erros.author && (
+            <div className="text-danger">{erros.author}</div>
+          )}
         </div>
-        <div>
-          <label>Descrição:</label>
+        <div className="mb-3">
+          <label className="form-label">Descrição:</label>
           <input
             type="text"
+            className="form-control"
             name="description"
             value={livro.description}
             onChange={handleChange}
           />
+          {erros.description && (
+            <div className="text-danger">{erros.description}</div>
+          )}
         </div>
-        <div>
-          <label>Nº de Páginas:</label>
+        <div className="mb-3">
+          <label className="form-label">Nº de Páginas:</label>
           <input
             type="number"
+            className="form-control"
             name="pageCount"
             value={livro.pageCount}
             onChange={handleChange}
           />
+          {erros.pageCount && (
+            <div className="text-danger">{erros.pageCount}</div>
+          )}
         </div>
-        <div>
-          <label>Data de publicação:</label>
+        <div className="mb-3">
+          <label className="form-label">Data de publicação:</label>
           <input
             type="date"
+            className="form-control"
             name="publishDate"
             value={livro.publishDate}
             onChange={handleChange}
           />
+          {erros.publishDate && (
+            <div className="text-danger">{erros.publishDate}</div>
+          )}
         </div>
-        {/* Adicione outros campos do livro conforme necessário */}
-        <button type="submit">Salvar Livro</button>
-        <Link to="/"> {/* Link para a página inicial */}
-          <button>Cancelar</button>
+        <button type="submit" className="btn btn-primary">
+          Salvar Livro
+        </button>
+        <Link to="/" className="btn btn-secondary ms-2">
+          Cancelar
         </Link>
       </form>
     </div>

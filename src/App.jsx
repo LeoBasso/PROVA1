@@ -1,4 +1,5 @@
-import "./App.css";
+// import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ListLivros from "./components/ListLivros";
 import Detalhes from "./components/Detalhes";
 import EditarLivro from "./components/EditarLivro";

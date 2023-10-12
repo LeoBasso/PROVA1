@@ -3,11 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 function Detalhes() {
-  const { id } = useParams(); // Obtém o ID do livro da URL
+  const { id } = useParams();
   const [livroDetalhes, setLivroDetalhes] = useState(null);
 
   useEffect(() => {
-    // Função para buscar os detalhes do livro com base no ID
     async function buscarDetalhesDoLivro() {
       try {
         const response = await axios.get(
@@ -21,22 +20,28 @@ function Detalhes() {
     }
 
     buscarDetalhesDoLivro();
-  }, [id]); // Certifique-se de que a busca seja acionada sempre que o ID na URL mudar
+  }, [id]);
 
   return (
-    <div>
-      <h1>Detalhes do Livro</h1>
-      {livroDetalhes ? (
-        <div>
-          <h2>Título: {livroDetalhes.title}</h2>
-          <p>Publicação: {livroDetalhes.publishDate}</p>
-          <p>Descrição: {livroDetalhes.description}</p>
-          <p>Páginas: {livroDetalhes.pageCount}</p>
-          <Link to="/">Voltar para a lista de livros</Link>
-        </div>
-      ) : (
-        <p>Carregando detalhes do livro...</p>
-      )}
+    <div className="bg-light d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+      <div className="container p-4">
+        <h1 className="text-dark text-center">Detalhes do Livro</h1>
+        {livroDetalhes ? (
+          <div>
+            <h2 className="text-center mb-3">Título: {livroDetalhes.title}</h2>
+            <p className="text-center mb-2">Publicação: {livroDetalhes.publishDate}</p>
+            <p className="text-center mb-2">Descrição: {livroDetalhes.description}</p>
+            <p className="text-center mb-2">Páginas: {livroDetalhes.pageCount}</p>
+            <div className="text-center">
+              <Link to="/" className="btn btn-primary" style={{ fontSize: "1.0rem", padding: "0.3rem 0.7rem" }}>
+                Voltar
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <p className="text-center">Carregando detalhes do livro...</p>
+        )}
+      </div>
     </div>
   );
 }
